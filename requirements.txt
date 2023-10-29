@@ -1,4 +1,4 @@
-ctionlib==1.12.1
+actionlib==1.12.1
 Adafruit-Blinka==8.23.0
 adafruit-circuitpython-busdevice==5.2.6
 adafruit-circuitpython-motor==3.4.12
@@ -37,7 +37,10 @@ joint_state_publisher==1.12.15
 kdl-parser-py==1.13.3
 laser_geometry==1.6.7
 message_filters==1.14.13
+numpy==1.24.4
+opencv-python==4.8.1.78
 pyftdi==0.55.0
+pygame==2.5.2
 pyserial==3.5
 python_qt_binding==0.4.4
 pyusb==1.2.1
