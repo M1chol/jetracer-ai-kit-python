@@ -5,10 +5,10 @@ In this repo I provide you with Jupyter notebooks as well as standalone python f
 2. steering car with controller using ipwidgets
 3. controlling LIDAR and simple mapping
   
-examples are provided in english and polish in thier respective folders
+examples are provided in english and polish in thier respective folders.  
+
 ## Instructions  
-1. follow istruction on [Jetracer site](https://www.waveshare.com/wiki/JetRacer_AI_Kit) until you reach Jupyter terminal
-2. add my Jupyter notebooks to /Jetracer/notebooks
+Follow instructions in [instrukcje_uruchomienia.md](https://github.com/M1chol/jetracer-ai-kit-python/blob/dev/instrukcje_uruchomienia.md)
 ## Why not use provided examples?
 1. my robot bought on Botland didn't come with working examples on teleoperation
 2. I provided more examples - like LIDAR
