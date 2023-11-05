@@ -1,12 +1,6 @@
 from time import sleep
 import pygame
-
-try:
-    from nvidia_racecar import NvidiaRacecar
-except RuntimeError as err:
-    print(err, "\n\nIf you are having permission errors run 'bash permission.sh' in bash console")
-    quit()
-
+from nvidia_racecar import NvidiaRacecar
 
 car = NvidiaRacecar()
 pygame.init()
@@ -15,7 +9,7 @@ while True:
     if pygame.joystick.get_count() > 0:
         break   
     print("No controller detected")
-    time.sleep(0.5)
+    sleep(0.5)
 
 print(f"Found {pygame.joystick.get_count()} joystick")
 js = pygame.joystick.Joystick(0)

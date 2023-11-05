@@ -9,7 +9,7 @@ while True:
     if pygame.joystick.get_count() > 0:
         break   
     print("No controller detected")
-    time.sleep(0.5)
+    sleep(0.5)
 
 print(f"Found {pygame.joystick.get_count()} joystick")
 js = pygame.joystick.Joystick(0)
