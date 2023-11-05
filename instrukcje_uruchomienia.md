@@ -19,13 +19,10 @@ Zaletą tego sposobu jest pominięcie wizualnego środowiska Jupyter. Daje to mo
 
 1. Włącz robota
 2. Zainstaluj środowisko programistyczne VS Code,  
- instrukcje znajdują się [tutaj](https://code.visualstudio.com/docs/setup/linux). W moim przypadku zwykły instalator nie zadziałał - musiałem zainstalować go z repozytorium, wszystkie instrukcje w linku.
+ instrukcje znajdują się [tutaj](https://code.visualstudio.com/docs/setup/linux).  
 3. Zainstaluj rozszerzenie Python - Rozszerzenia pobiera się bezpośrednio w aplikacji VS Code w zakładce `Extensions`
-4. Przejdź do zakładki Source Control - jeżeli znajduje się komunikat o braku Git'a pobierz go według instrukcji
+4. Przejdź do zakładki Source Control   
 5. Kliknij `Clone Repository` i wklej link `https://github.com/M1chol/jetracer-ai-kit-python.git`
-6. Wybierz folder do którego ma zostać sklonowane repozytorium
-7. Następnym krokiem jest stworzenie środowiska wirtualnego kliknij `Ctrl+Shift+P` i wyszukaj `Environment` wybierz `Python: Create Environment...` a następnie `Venv` i wybierz wersję Pythona. Proponuję wersję > 3.7, ja zainstalowałem python 3.8 za pomocą komendy `sudo apt install python3.8` po restarcie aplikacji powinna pojawić się nowa wersja.
-8. Teraz instalujemy odpowiednie biblioteki, otwórz terminal `Ctrl+tilda` lub kliknij wykrzyknik w lewym dolnym i zmień zakładkę
-9. wpisz komendę `pip install -r requirements.txt` 
-10. ostatnim problemem na jaki napotkamy będzie problem braku uprawnień biblioteki `gpio`, aby rozwiązać ten problem w terminalu systemu wpisz komendę `bash permission.sh`
- więcej informacji i permanentne rozwiązanie [tutaj](https://github.com/NVIDIA/jetson-gpio/issues/20)
+6. Wybierz folder do którego ma zostać sklonowane repozytorium   
+7. Jako środowisko wybierz python 3 - w prawym dolnym rogu
+8. Uruchom pliki
