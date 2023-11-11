@@ -5,49 +5,66 @@ import numpy as np
 import cv2
 
 
-SCREEN_W = 640
-SCREEN_H = 480
+class LidarJet():
 
-frame = np.zeros((SCREEN_H, SCREEN_W, 1))
-frame[:, :] = [255]
+    def __init__(self, port) -> None:
+        self.SCREEN_W = 640
+        self.SCREEN_H = 480
+        self.show_output=True
+        self.output_jpg=False
+        self.jpg_img=None
 
-# Setup the RPLidar
-PORT_NAME = '/dev/ttyACM1'
-lidar = RPLidar(PORT_NAME)
-lidar.clean_input()
+        self.img = np.zeros((self.SCREEN_H, self.SCREEN_W, 1))
+        self.img[:, :] = [255]
 
-# used to scale data to fit on the screen
-max_distance = 0
+        # Setup the RPLidar
+        self.lidar = RPLidar(port)
+        self.lidar.clean_input()
 
-#pylint: disable=redefined-outer-name,global-statement
-def process_data(data):
-    global max_distance
-    frame[:, :] = [255]
-    for angle in range(360):
-        distance = data[angle]
-        if distance > 0:                  # ignore initially ungathered data points
-            max_distance = 3000 #max([min([5000, distance]), max_distance])
-            radians = angle * pi / 180.0 - pi/2
-            x = distance * cos(radians)
-            y = distance * sin(radians)
-            point = (SCREEN_W//2 + int(x/max_distance*400), SCREEN_H//2 + int(y/max_distance*400))
-            cv2.circle(frame, point, 2, (0,0,0), 2)
-    cv2.imshow('Lidar', frame)
+        # used to scale data to fit on the screen
+        self.max_distance = 0
 
+        self.scan_data = [0]*360
 
-scan_data = [0]*360
-def stop():
-    print('Stoping...')
-    lidar.stop()
-    lidar.disconnect()
-    quit()
+    def process_data(self, data):
+        self.img[:, :] = [255]
+        for angle in range(360):
+            distance = data[angle]
+            if distance > 0:                    # ignore initially ungathered data points
+                max_distance = 3000             #max([min([5000, distance]), max_distance])
+                radians = angle * pi / 180.0 - pi/2
+                x = distance * cos(radians)
+                y = distance * sin(radians)
+                point = (self.SCREEN_W//2 + int(x/max_distance*400), self.SCREEN_H//2 + int(y/max_distance*400))
+                cv2.circle(self.img, point, 2, (0,0,0), 2)
+        self.output()
 
-try:
-    for scan in lidar.iter_scans():
-        if cv2.waitKey(1) == 113:
-            stop()
-        for (_, angle, distance) in scan:
-            scan_data[min([359, floor(angle)])] = distance
-        process_data(scan_data)
-except KeyboardInterrupt:
-    stop()
+    def output(self):
+        if self.show_output:
+            cv2.imshow('Lidar', self.img)
+        if self.output_jpg:
+            self.jpg_img = cv2.imecode('.JPEG', self.img)
+
+    def read_frame_jpg (self):
+        return self.jpg_img
+
+    def stop(self):
+        print('Stoping...')
+        self.lidar.stop()
+        self.lidar.disconnect()
+        quit()
+
+    def start_scan(self):
+        try:
+            for scan in self.lidar.iter_scans():
+                if cv2.waitKey(1) == 113:
+                    self.stop()
+                for (_, angle, distance) in scan:
+                    self.scan_data[min([359, floor(angle)])] = distance
+                self.process_data(self.scan_data)
+        except KeyboardInterrupt:
+            self.stop()
+
+if __name__=="__main__":
+    lidar = LidarJet('/dev/ttyACM1')
+    lidar.start_scan()
