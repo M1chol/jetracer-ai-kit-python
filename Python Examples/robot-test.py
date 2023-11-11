@@ -1,23 +1,26 @@
 from camera import CameraJet
 from lidar import LidarJet
 from robotcar import CarJet
-from threading import Thread
+from multiprocessing import Process
 from time import sleep
 
-#cam = CameraJet()
-lid = LidarJet('/dev/ttyACM1')
-car = CarJet()
+def lid_proc():
+    lid = LidarJet('/dev/ttyACM1')
+    lid.start_scan()
 
+def cam_proc():
+    cam = CameraJet()
+    cam.show_stream()
 
-#t1 = Thread(target=cam.show_stream)
-t2 = Thread(target=lid.start_scan)
-t3 = Thread(target=car.start_steering)
+def car_proc():
+    car = CarJet()
+    car = car.start_steering()
 
-#t1.start()
-t2.start()
-t3.start()
+if __name__ == "__main__":
+    lid_proc = Process(target=lid_proc)
+    cam_proc = Process(target=cam_proc)
+    car_proc = Process(target=car_proc)
 
-#print("Waiting 10 sec...")
-#sleep(10)
-
-#car.start_steering()
+    lid_proc.start()
+    cam_proc.start()
+    car_proc.start()

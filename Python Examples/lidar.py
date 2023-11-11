@@ -55,6 +55,7 @@ class LidarJet():
         quit()
 
     def start_scan(self):
+        self.lidar.clean_input()
         try:
             for scan in self.lidar.iter_scans():
                 if cv2.waitKey(1) == 113:
