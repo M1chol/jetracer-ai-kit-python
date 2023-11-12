@@ -1,6 +1,6 @@
 from camera import CameraJet
 from lidar import LidarJet
-from robotcar import CarJet
+from steering import CarJet
 from multiprocessing import Process
 from time import sleep
 
@@ -10,6 +10,7 @@ def lid_proc():
 
 def cam_proc():
     cam = CameraJet()
+    cam.resolution=1
     cam.show_stream()
 
 def car_proc():

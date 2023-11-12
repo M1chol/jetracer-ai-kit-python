@@ -7,12 +7,10 @@ import cv2
 
 class LidarJet():
 
-    def __init__(self, port) -> None:
+    def __init__(self, port, show_output=True) -> None:
         self.SCREEN_W = 640
         self.SCREEN_H = 480
-        self.show_output=True
-        self.output_jpg=False
-        self.jpg_img=None
+        self.show_output=show_output
 
         self.img = np.zeros((self.SCREEN_H, self.SCREEN_W, 1))
         self.img[:, :] = [255]
@@ -37,16 +35,16 @@ class LidarJet():
                 y = distance * sin(radians)
                 point = (self.SCREEN_W//2 + int(x/max_distance*400), self.SCREEN_H//2 + int(y/max_distance*400))
                 cv2.circle(self.img, point, 2, (0,0,0), 2)
-        self.output()
-
-    def output(self):
         if self.show_output:
             cv2.imshow('Lidar', self.img)
-        if self.output_jpg:
-            self.jpg_img = cv2.imecode('.JPEG', self.img)
 
-    def read_frame_jpg (self):
-        return self.jpg_img
+    def read_frame_jpg(self):
+        try:
+            self.start_scan(oneScan=True)
+            _, jpg_img = cv2.imencode('.jpg',self.img)
+            return jpg_img.tobytes()
+        except:
+            pass
 
     def stop(self):
         print('Stoping...')
@@ -54,7 +52,7 @@ class LidarJet():
         self.lidar.disconnect()
         quit()
 
-    def start_scan(self):
+    def start_scan(self, oneScan=False):
         self.lidar.clean_input()
         try:
             for scan in self.lidar.iter_scans():
@@ -63,6 +61,8 @@ class LidarJet():
                 for (_, angle, distance) in scan:
                     self.scan_data[min([359, floor(angle)])] = distance
                 self.process_data(self.scan_data)
+                if oneScan:
+                    break
         except KeyboardInterrupt:
             self.stop()
 

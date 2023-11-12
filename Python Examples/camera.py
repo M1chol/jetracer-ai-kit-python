@@ -1,19 +1,4 @@
-# MIT License
-# Copyright (c) 2019-2022 JetsonHacks
-# Modified by Michal Kozlowski
-
-# Using a CSI camera (such as the Raspberry Pi Version 2) connected to a
-# NVIDIA Jetson Nano Developer Kit using OpenCV
-# Drivers for the camera and OpenCV are included in the base image
-
 import cv2
-
-""" 
-gstreamer_pipeline returns a GStreamer pipeline for capturing from the CSI camera
-Flip the image by setting the flip_method (most common values: 0 and 2)
-display_width and display_height determine the size of each camera pane in the window on the screen
-Default 1920x1080 displayd in a 1/4 size window
-"""
 
 class CameraJet():
     
@@ -28,13 +13,13 @@ class CameraJet():
                 'Could not initialize camera. Please see error trace. Perhaps there is a second session running? try launching $ sudo service nvargus-daemon restart')
         self.wasInit=True
 
-    @staticmethod
-    def gstreamer_pipeline(
+
+    def gstreamer_pipeline(self,
         sensor_id=0,
-        capture_width=1920,
-        capture_height=1080,
-        display_width=960,
-        display_height=540,
+        capture_width=640,
+        capture_height=480,
+        display_width=640,
+        display_height=480,
         framerate=30,
         flip_method=0,
     ) -> str:
@@ -67,7 +52,9 @@ class CameraJet():
     
     def read_frame_jpg(self):
         frame = self.read_frame()
-        return cv2.imencode('.JPEG', frame)
+        param = [int(cv2.IMWRITE_JPEG_QUALITY), 85]
+        _, frame = cv2.imencode('.jpeg', frame, param)
+        return frame.tobytes()
 
     def show_stream(self):
         while True:
