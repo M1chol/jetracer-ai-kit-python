@@ -1,6 +1,15 @@
 from flask import Flask, render_template, Response
 from camera import CameraJet
 from lidar import LidarJet
+from multiprocessing import Process
+from steering import CarJet
+
+def steerCar():
+    car = CarJet()
+    car.start_steering()
+
+steering = Process(target=steerCar)
+steering.start()
 
 app = Flask(__name__)
 
