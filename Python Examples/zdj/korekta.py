@@ -60,11 +60,27 @@ detected corners (imgpoints)
 """
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
  
-print("Camera matrix : \n")
-print(mtx)
-print("dist : \n")
-print(dist)
-print("rvecs : \n")
-print(rvecs)
-print("tvecs : \n")
-print(tvecs)
+print("Camera matrix :", type(mtx))
+with open("mtx.txt", "w") as plik:
+    print(mtx, file = plik)
+
+print("dist :", type(dist))
+with open("dist.txt", "w") as plik:
+    print(dist, file=plik)
+# print("rvecs : \n")
+# print(rvecs)
+# print("tvecs : \n")
+# print(tvecs)
+
+
+# poprawka zdjecia
+img = cv2.imread('zdj2.jpg')
+h,  w = img.shape[:2]
+newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w,h), 1, (w,h))
+
+# undistort
+dst = cv2.undistort(img, mtx, dist, None, newcameramtx)
+# crop the image
+x, y, w, h = roi
+dst = dst[y:y+h, x:x+w]
+cv2.imwrite('calibresult.png', dst)
