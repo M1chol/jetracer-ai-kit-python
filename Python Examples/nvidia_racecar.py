@@ -6,7 +6,7 @@ from adafruit_servokit import ServoKit
 class NvidiaRacecar(rc.Racecar):
     
     i2c_address = traitlets.Integer(default_value=0x40)
-    steering_gain = traitlets.Float(default_value=-0.65)
+    steering_gain = traitlets.Float(default_value=-1)
     steering_offset = traitlets.Float(default_value=0)
     steering_channel = traitlets.Integer(default_value=0)
     throttle_gain = traitlets.Float(default_value=0.8)
